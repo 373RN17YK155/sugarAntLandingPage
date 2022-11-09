@@ -1,0 +1,215 @@
+@media screen and (max-width: 1180px) {
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  h3 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .common-description-medium {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  header.header .header__nav .header_nav-button {
+    display: block;
+  }
+
+  header.header .header__nav .header__nav-menu {
+    display: none;
+  }
+
+  .features .feature__item .feature-item__content {
+    gap: 40px;
+  }
+
+  .features
+    .feature__item
+    .feature-item__content
+    .item-content__body
+    .body__feature-row
+    .feature-row__feature-icon-wrapper {
+    height: 48px;
+    width: 48px;
+  }
+
+  .dignitys .container {
+    gap: 40px;
+  }
+
+  .dignitys .dignity {
+    flex: 0 0 calc(25% - 40px * 3 / 4);
+  }
+
+  .integrations .integrations__icon-wrapper img {
+    flex: 1 1 calc(30% - 121px);
+  }
+
+  footer.footer .footer__subscribe {
+    flex: 1 0 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hero .hero__body {
+    width: 100%;
+  }
+
+  .hero .hero__body .body__input {
+    flex: 1 1 100%;
+  }
+
+  .hero .hero__body .body__button {
+    flex: 1 1 100%;
+  }
+
+  .reliable .reliable__body-block {
+    gap: 48px;
+    flex-direction: column;
+  }
+
+  .dignitys .dignity {
+    flex: 0 0 calc(50% - 40px * 1 / 2);
+  }
+
+  .features .container {
+    gap: 48px;
+  }
+
+  .features .feature__item .feature-item__content {
+    gap: 32px;
+  }
+
+  .features .feature__item .feature-item__content .item-content__body {
+    flex-direction: column-reverse;
+  }
+
+  .features .feature__item {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .features .feature__item .feature-item__img-wrapper {
+    padding-right: 100%;
+  }
+
+  footer.footer .container {
+    flex-direction: column-reverse;
+  }
+
+  footer.footer .footer__nav {
+    flex: 1 1 100%;
+  }
+
+  footer.footer .footer__corp-info {
+    flex: 1 1 100%;
+    gap: 48px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .section__header {
+    gap: 16px;
+  }
+
+  .section__title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .section__description {
+    font-size: 12px;
+    line-height: 22px;
+  }
+
+  .common-description-medium {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .common-descritpion-base {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  h1 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  h2 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  h3 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  h4 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  header.header {
+    padding: 24px 0 40px;
+  }
+
+  .hero .container {
+    gap: 48px;
+  }
+
+  .hero .hero__header {
+    gap: 16px;
+  }
+
+  .hero .hero__header .header__subtitle {
+    font-size: 11px;
+    line-height: 22px;
+  }
+
+  .hero .hero__body .body__input {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .hero .hero__body .body__button {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .hero .hero__body .body__label {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  .dignitys .dignity {
+    flex: 1 1 100%;
+  }
+
+  .dignitys .dignity .dignity__info .info__description {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .reliable .reliable__body-block .body-block__list .list__list-item .list-item__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .features
+    .feature__item
+    .feature-item__content
+    .item-content__body
+    .body__feature-row
+    .feature-row__feature-icon-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+}
