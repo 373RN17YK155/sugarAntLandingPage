@@ -7,7 +7,6 @@ const SplineUtils = {
     const amount = points.length
     return (t) => {
       const tScaled = (t * amount) % amount
-      console.log(tScaled)
       return points.reduce(
         (acc, cur, i) => {
           const d = SplineUtils.modDiff(tScaled, i, amount)
@@ -24,25 +23,26 @@ const SplineUtils = {
   }
 }
 
-function toggleOverflowMenuVisible() {
-  document.querySelector('.overflow-nav').classList.toggle('overflow-nav_active')
-}
-
 const menuButton = document.getElementById('menuButton')
 const closeMenuButton = document.getElementById('closeMenuButton')
 const collapsePanelList = document.querySelectorAll('.collapse-panel')
 
-const features = document.getElementById('features')
+const convenientWorkflow = document.getElementById('convenientWorkflow')
 
-const lineChart = document.getElementById('chart')
-const stage = document.getElementById('stage')
-const kanban = document.getElementById('kanban')
+var offsetTopPercent = 0
+var renderOffsetTopPercent = 0
 
 const spline = SplineUtils.fastSpline([
   { x: 0, y: 0 },
   { x: 0, y: 1 },
   { x: 1, y: 1 },
   { x: 1, y: 0 }
+])
+const spline1 = SplineUtils.fastSpline([
+  { x: 0.5, y: 0 },
+  { x: 0, y: 0.5 },
+  { x: 0.5, y: 1 },
+  { x: 1, y: 0.5 }
 ])
 
 menuButton.addEventListener('click', toggleOverflowMenuVisible)
@@ -54,19 +54,33 @@ collapsePanelList.forEach((element) =>
 )
 
 document.addEventListener('scroll', () => {
-  const offsetTop = window.scrollY - features.offsetTop
-  const featuresHeight = features.offsetHeight
+  // console.log(window.scrollY / convenientWorkflow.parentElement.offsetTop)
+  // console.log(convenientWorkflow.parentElement.offsetTop / window.scrollY)
+  // offsetTopPercent = window.scrollY / document.querySelector('body').scrollHeight
 
-  const state = spline(offsetTop / featuresHeight)
-  const state1 = spline((offsetTop / featuresHeight) * 3)
-  const state2 = spline((offsetTop / featuresHeight) * 6)
+  const containerOffset = convenientWorkflow.parentElement.offsetTop - window.innerHeight / 2
 
-  lineChart.style.top = `${+state.y * 80}%`
-  lineChart.style.left = `${+state.x * 80}%`
-
-  stage.style.top = `${10 + state1.y * 80}%`
-  stage.style.left = `${10 + state1.x * 80}%`
-
-  kanban.style.top = `${10 + state2.y * 80}%`
-  kanban.style.left = `${10 + state2.x * 80}%`
+  offsetTopPercent = Math.min(1 - containerOffset / window.scrollY, 0)
+  console.log(offsetTopPercent)
 })
+
+function toggleOverflowMenuVisible() {
+  document.querySelector('.overflow-nav').classList.toggle('overflow-nav_active')
+}
+
+function animate() {
+  renderOffsetTopPercent = renderOffsetTopPercent * 0.9 + offsetTopPercent * 0.1
+  Array.from(convenientWorkflow.children).forEach((item) => {
+    const state =
+      item.dataset.traectory === 'square'
+        ? spline((renderOffsetTopPercent + Number(item.dataset.offset)) * item.dataset.moveSpeed)
+        : spline1((renderOffsetTopPercent + Number(item.dataset.offset)) * item.dataset.moveSpeed)
+    item.style.transform = `
+      translate(${state.x * convenientWorkflow.clientWidth}px, ${state.y * convenientWorkflow.clientHeight}px)
+      rotate(${renderOffsetTopPercent * item.dataset.rotateSpeed * 360}deg)
+     `
+  })
+  requestAnimationFrame(animate)
+}
+
+animate()

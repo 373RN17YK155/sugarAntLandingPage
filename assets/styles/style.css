@@ -95,9 +95,8 @@ h4 {
 }
 
 .container {
-  max-width: var(--content-container-width);
-  width: 100%;
-  margin: 0 auto;
+  width: min(100% - 64px, var(--content-container-width));
+  margin-inline: auto;
 }
 
 .section__header {
@@ -278,8 +277,7 @@ header.header .header__nav .header__nav-menu ul li a {
 }
 
 .dignitys .container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 64px;
 }
 
@@ -367,10 +365,15 @@ header.header .header__nav .header__nav-menu ul li a {
   flex-direction: row-reverse;
 }
 
-.features .feature__item .feature-item__img-wrapper {
+.features .feature__item .feature-item__animate-box {
   position: relative;
   flex: 1 0 50%;
   padding-bottom: 45%;
+}
+
+.features .feature__item .feature-item__img-wrapper {
+  position: absolute;
+  inset: -18% 18% 18% -18%;
 }
 
 .features .feature__item .feature-item__img-wrapper img {
