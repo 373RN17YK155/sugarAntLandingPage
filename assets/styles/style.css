@@ -460,19 +460,19 @@ header.header .header__nav .header__nav-menu ul li a {
 }
 
 .integrations .integrations__carousel {
-  min-height: 40px;
-  position: relative;
   overflow: hidden;
+  display: flex;
 }
 
-.integrations .integrations__carousel .carousel__wrapper {
-  padding-right: 16px;
-  position: absolute;
+.integrations .integrations__carousel div {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  gap: 16px;
   animation: carousel 15s linear infinite;
+}
+
+.integrations .integrations__carousel div img {
+  max-height: 40px;
+  margin-inline: clamp(1rem, 5vw, 4rem);
 }
 
 .questions {
