@@ -86,3 +86,21 @@ function animate() {
 }
 
 animate()
+
+const sectionWatcherCallback = (sections) => {
+  sections.forEach((section) => {
+    if (section.isIntersecting) {
+      window.scrollTo(0, section.target.offsetTop)
+    }
+  })
+}
+
+const sectionWatcherOptions = {
+  threshold: 0.3
+}
+
+const sectionsForScroll = document.querySelectorAll('.feature__item')
+
+const sectionWatcher = new IntersectionObserver(sectionWatcherCallback, sectionWatcherOptions)
+
+sectionsForScroll.forEach((section) => sectionWatcher.observe(section))
