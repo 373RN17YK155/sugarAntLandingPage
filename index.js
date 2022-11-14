@@ -23,6 +23,8 @@ const SplineUtils = {
   }
 }
 
+const main = document.getElementById('main')
+const overlayMenu = document.getElementById('overlayMenu')
 const menuButton = document.getElementById('menuButton')
 const closeMenuButton = document.getElementById('closeMenuButton')
 const collapsePanelList = document.querySelectorAll('.collapse-panel')
@@ -54,18 +56,14 @@ collapsePanelList.forEach((element) =>
 )
 
 document.addEventListener('scroll', () => {
-  // console.log(window.scrollY / convenientWorkflow.parentElement.offsetTop)
-  // console.log(convenientWorkflow.parentElement.offsetTop / window.scrollY)
-  // offsetTopPercent = window.scrollY / document.querySelector('body').scrollHeight
-
-  const containerOffset = convenientWorkflow.parentElement.offsetTop - window.innerHeight / 2
-
-  offsetTopPercent = Math.min(1 - containerOffset / window.scrollY, 0)
-  console.log(offsetTopPercent)
+  const animStart = convenientWorkflow.parentElement.offsetTop - window.innerHeight
+  const animEnd = convenientWorkflow.parentElement.offsetTop - window.innerHeight / 2
+  offsetTopPercent = Math.max(Math.min((animEnd - window.scrollY) / (animEnd - animStart), 1), 0)
 })
 
 function toggleOverflowMenuVisible() {
-  document.querySelector('.overflow-nav').classList.toggle('overflow-nav_active')
+  overlayMenu.classList.toggle('overflow-nav_active')
+  main.classList.toggle('main__overlay')
 }
 
 function animate() {
@@ -73,12 +71,16 @@ function animate() {
   Array.from(convenientWorkflow.children).forEach((item) => {
     const state =
       item.dataset.traectory === 'square'
-        ? spline((renderOffsetTopPercent + Number(item.dataset.offset)) * item.dataset.moveSpeed)
-        : spline1((renderOffsetTopPercent + Number(item.dataset.offset)) * item.dataset.moveSpeed)
+        ? spline((renderOffsetTopPercent + Number(item.dataset.traectoryOffset)) * item.dataset.moveSpeed)
+        : spline1((renderOffsetTopPercent + Number(item.dataset.traectoryOffset)) * item.dataset.moveSpeed)
     item.style.transform = `
-      translate(${state.x * convenientWorkflow.clientWidth}px, ${state.y * convenientWorkflow.clientHeight}px)
-      rotate(${renderOffsetTopPercent * item.dataset.rotateSpeed * 360}deg)
-     `
+      translate(
+        ${state.x * convenientWorkflow.clientWidth + convenientWorkflow.clientWidth * Number(item.dataset.offsetX)}px, 
+        ${state.y * convenientWorkflow.clientHeight + convenientWorkflow.clientWidth * Number(item.dataset.offsetY)}px
+      )
+      rotate(${item.dataset.rotateSpeed * renderOffsetTopPercent * 360}deg)
+      `
+    item.style.zIndex = item.dataset.zIndex
   })
   requestAnimationFrame(animate)
 }

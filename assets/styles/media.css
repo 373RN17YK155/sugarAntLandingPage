@@ -1,14 +1,4 @@
 @media (max-width: 1024px) {
-  h3 {
-    font-size: 20px;
-    line-height: 24px;
-  }
-
-  .common-description-medium {
-    font-size: 14px;
-    line-height: 17px;
-  }
-
   header.header .header__nav .header_nav-button {
     display: block;
   }
@@ -19,16 +9,6 @@
 
   .features .feature__item .feature-item__content {
     gap: 40px;
-  }
-
-  .features
-    .feature__item
-    .feature-item__content
-    .item-content__body
-    .body__feature-row
-    .feature-row__feature-icon-wrapper {
-    height: 48px;
-    width: 48px;
   }
 
   .dignitys .container {
@@ -106,46 +86,6 @@
     gap: 16px;
   }
 
-  .section__title {
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  .section__description {
-    font-size: 12px;
-    line-height: 22px;
-  }
-
-  .common-description-medium {
-    font-size: 12px;
-    line-height: 15px;
-  }
-
-  .common-descritpion-base {
-    font-size: 12px;
-    line-height: 18px;
-  }
-
-  h1 {
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  h2 {
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  h3 {
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  h4 {
-    font-size: 16px;
-    line-height: 20px;
-  }
-
   header.header {
     padding: 24px 0 40px;
   }
@@ -158,48 +98,8 @@
     gap: 16px;
   }
 
-  .hero .hero__header .header__subtitle {
-    font-size: 11px;
-    line-height: 22px;
-  }
-
-  .hero .hero__body .body__input {
-    font-size: 14px;
-    line-height: 18px;
-  }
-
-  .hero .hero__body .body__button {
-    font-size: 14px;
-    line-height: 16px;
-  }
-
-  .hero .hero__body .body__label {
-    font-size: 10px;
-    line-height: 12px;
-  }
-
   .dignitys .dignity {
     flex: 1 1 100%;
-  }
-
-  .dignitys .dignity .dignity__info .info__description {
-    font-size: 12px;
-    line-height: 20px;
-  }
-
-  .reliable .reliable__body-block .body-block__list .list__list-item .list-item__text {
-    font-size: 12px;
-    line-height: 15px;
-  }
-
-  .features
-    .feature__item
-    .feature-item__content
-    .item-content__body
-    .body__feature-row
-    .feature-row__feature-icon-wrapper {
-    width: 40px;
-    height: 40px;
   }
 }
 
