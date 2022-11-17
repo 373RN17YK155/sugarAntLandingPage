@@ -386,15 +386,12 @@ header.header .header__nav .header__nav-menu ul li a {
   flex-direction: row-reverse;
 }
 
-.features .feature__item .feature-item__animate-box {
+.features .feature__item .feature-item__img-wrapper {
   position: relative;
   flex: 1 0 50%;
   padding-bottom: 55%;
-}
-
-.features .feature__item .feature-item__img-wrapper {
-  position: absolute;
-  inset: 0 40% 40% 0;
+  transform-style: preserve-3d;
+  perspective: 100px;
 }
 
 .features .feature__item .feature-item__img-wrapper img {
