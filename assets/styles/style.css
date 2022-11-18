@@ -377,6 +377,7 @@ header.header .header__nav .header__nav-menu ul li a {
 }
 
 .features .feature__item {
+  min-height: 100vh;
   display: flex;
   gap: 120px;
   align-items: center;

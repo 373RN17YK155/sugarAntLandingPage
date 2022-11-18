@@ -31,8 +31,22 @@ function toggleOverflowMenuVisible() {
 
 function setParalax(offset, images) {
   images.forEach((item) => {
-    item.style.transform = `translate3d(0, ${offset * -400}px, ${item.dataset.zIndex * 100}px) scale(${
-      -item.dataset.zIndex + 0.5
-    })`
+    item.style.transform = `translate3d(0, ${offset * (-window.innerHeight * 0.8)}px, ${
+      item.dataset.zIndex * 100
+    }px) scale(${-item.dataset.zIndex + 0.5})`
   })
 }
+
+const sectionWatcherCallback = (sections) => {
+  sections.forEach((section) => {
+    if (section.isIntersecting) {
+      window.scrollTo(0, section.target.offsetTop)
+    }
+  })
+}
+
+const sectionsForScroll = document.querySelectorAll('.feature__item')
+
+const sectionWatcher = new IntersectionObserver(sectionWatcherCallback, { threshold: 0.3 })
+
+sectionsForScroll.forEach((section) => sectionWatcher.observe(section))
