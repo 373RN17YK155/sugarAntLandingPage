@@ -368,6 +368,8 @@ header.header .header__nav .header__nav-menu ul li a {
 
 .features {
   padding: 120px 0;
+
+  position: relative;
 }
 
 .features .container {
@@ -376,11 +378,21 @@ header.header .header__nav .header__nav-menu ul li a {
   gap: 120px;
 }
 
+.features__item-wrapper {
+  height: 800vh;
+  display: flex;
+  flex-direction: column;
+  gap: 100vh;
+}
+
 .features .feature__item {
   min-height: 100vh;
   display: flex;
   gap: 120px;
   align-items: center;
+
+  position: sticky;
+  top: 0;
 }
 
 .features .feature__item_reverse {

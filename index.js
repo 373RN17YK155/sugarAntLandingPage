@@ -15,12 +15,21 @@ collapsePanelList.forEach((element) =>
 const convenientWorkflow = document.querySelector('#convenientWorkflow')
 
 document.addEventListener('scroll', () => {
-  document.querySelectorAll('.feature-item__img-wrapper').forEach((imageWrapper) => {
-    const animStart = imageWrapper.offsetTop - window.innerHeight
-    const animEnd = imageWrapper.offsetTop + imageWrapper.clientHeight - window.innerHeight
+  const item = document.querySelector('#features')
+
+  document.querySelectorAll('.feature-item__img-wrapper').forEach((imageWrapper, index) => {
+    const animStart =
+      item.offsetTop +
+      imageWrapper.clientHeight * (index + 1) -
+      window.innerHeight +
+      index * 300 +
+      index * window.innerHeight
+    const animEnd = item.offsetTop + imageWrapper.clientHeight * (index + 1) + index * 300 + index * window.innerHeight
+
     const offsetY = Math.max(Math.min((animEnd - window.scrollY) / (animEnd - animStart), 1), -1)
 
     setParalax(offsetY, Array.from(imageWrapper.children))
+    imageWrapper.parentElement.style.opacity = Math.min(offsetY + 1, 1)
   })
 })
 
@@ -31,22 +40,8 @@ function toggleOverflowMenuVisible() {
 
 function setParalax(offset, images) {
   images.forEach((item) => {
-    item.style.transform = `translate3d(0, ${offset * (-window.innerHeight * 0.8)}px, ${
+    item.style.transform = `translate3d(0, ${offset * (window.innerHeight * 0.8)}px, ${
       item.dataset.zIndex * 100
     }px) scale(${-item.dataset.zIndex + 0.5})`
   })
 }
-
-const sectionWatcherCallback = (sections) => {
-  sections.forEach((section) => {
-    if (section.isIntersecting) {
-      window.scrollTo(0, section.target.offsetTop)
-    }
-  })
-}
-
-const sectionsForScroll = document.querySelectorAll('.feature__item')
-
-const sectionWatcher = new IntersectionObserver(sectionWatcherCallback, { threshold: 0.3 })
-
-sectionsForScroll.forEach((section) => sectionWatcher.observe(section))
