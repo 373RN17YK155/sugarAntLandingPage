@@ -367,8 +367,6 @@ header.header .header__nav .header__nav-menu ul li a {
 }
 
 .features {
-  padding: 120px 0;
-
   position: relative;
 }
 
@@ -378,21 +376,23 @@ header.header .header__nav .header__nav-menu ul li a {
   gap: 120px;
 }
 
+.features .feature__header {
+  position: sticky;
+  top: 0;
+  padding-block: 100px;
+}
+
 .features__item-wrapper {
-  height: 800vh;
   display: flex;
   flex-direction: column;
-  gap: 100vh;
 }
 
 .features .feature__item {
-  min-height: 100vh;
+  position: sticky;
+  top: 250px;
   display: flex;
   gap: 120px;
   align-items: center;
-
-  position: sticky;
-  top: 0;
 }
 
 .features .feature__item_reverse {
@@ -402,7 +402,7 @@ header.header .header__nav .header__nav-menu ul li a {
 .features .feature__item .feature-item__img-wrapper {
   position: relative;
   flex: 1 0 50%;
-  padding-bottom: 55%;
+  padding-bottom: 45%;
   transform-style: preserve-3d;
   perspective: 100px;
 }
