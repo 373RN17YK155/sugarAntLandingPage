@@ -168,7 +168,7 @@ function setTransform() {
 function setTransformForFeatureItem(item, index, array) {
   if (window.scrollY > brakepoints[index][0] && window.scrollY < brakepoints[index][1] && index < array.length) {
     item.style.position = 'sticky'
-    item.style.top = featuresPaddingBlock * 2 + featuresHeaderHeight + 'px'
+    item.style.top = featuresPaddingBlock + featuresHeaderHeight + 'px'
   } else if (index !== array.length - 1) {
     item.style.position = 'static'
     item.style.top = 'unset'
