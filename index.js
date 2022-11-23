@@ -98,6 +98,7 @@ document.addEventListener('scroll', traceDirection(), false)
 const featuresHeaderHeight = document.querySelector('.feature__header').getBoundingClientRect().height
 const featureItemHeight = document.querySelector('.feature-item').getBoundingClientRect().height
 const featureItemsLength = featuresItems.length
+const featuresPaddingBlock = Number(getComputedStyle(features).paddingTop.replace('px', ''))
 
 // functions
 
@@ -123,9 +124,6 @@ function fillBrakepoints() {
     ])
   })
   console.log(brakepoints)
-
-  console.log(features.offsetTop)
-  console.log(featuresItems[0].offsetTop)
 }
 
 function setInitialStylesForFeatureItemsWrapper() {
@@ -146,57 +144,82 @@ function setParalax() {
     })
 
     if (offsetY > -1 && offsetY < 1) {
-      checkPosition(item, index, array)
-      setTransformForFeatureItem(item.parentElement, index)
+      if (!scroller.isBusy) {
+        checkItemPosition(item, index, array)
+      }
+      setTransformForFeatureItem(item.parentElement, index, array)
     }
   })
 }
 
 function setTransform() {
-  const top = getComputedStyle(features).paddingTop
   if (
     window.scrollY > features.offsetTop &&
-    window.scrollY < features.offsetTop + features.clientHeight - (top.replace('px', '') * 2 + featureItemHeight)
+    window.scrollY < features.offsetTop + features.clientHeight - (featuresPaddingBlock * 2 + featureItemHeight)
   ) {
     featuresHeader.style.position = 'sticky'
-    featuresHeader.style.top = top
-    // featuresHeader.style.paddingBottom = Number(top.replace('px', '')) + featureItemHeight + 'px'
+    featuresHeader.style.top = featuresPaddingBlock + 'px'
   } else {
     featuresHeader.style.position = 'static'
     featuresHeader.style.top = 'unset'
   }
 }
 
-function setTransformForFeatureItem(item, index) {
-  console.log(features.offsetTop)
-  console.log(featuresItems[0].offsetTop)
-
-  if (window.scrollY > features.offsetTop && window.scrollY <= brakepoints[index][1]) {
-    Array.from(item.children).forEach((img) => (img.style.transform = `translateY(${window.scrollY - features.offsetTop}px)`))
+function setTransformForFeatureItem(item, index, array) {
+  if (window.scrollY > brakepoints[index][0] && window.scrollY < brakepoints[index][1] && index < array.length) {
+    item.style.position = 'sticky'
+    item.style.top = featuresPaddingBlock * 2 + featuresHeaderHeight + 'px'
+  } else if (index !== array.length - 1) {
+    item.style.position = 'static'
+    item.style.top = 'unset'
+  }
+  if (index === array.length - 1) {
+    featuresHeader.style.bottom = featuresPaddingBlock + featureItemHeight + 'px'
   }
 }
 
 function scrollTrigger() {
   setTransform()
   setParalax()
+  checkScrollPosition()
 }
 
-function checkPosition(item, index, array) {
+function checkItemPosition(item, index, array) {
   if (
     scrollDirection === ScrollDirections.DOWN &&
     index < array.length - 1 &&
-    item.getBoundingClientRect().y < -100 &&
-    array[index + 1].getBoundingClientRect().y > 0
+    brakepoints[index][0] + featureItemHeight / 2 + 50 < scrollY &&
+    brakepoints[index][1] > scrollY
   ) {
-    scroller.goTo(scrollY + array[index + 1].getBoundingClientRect().y)
+    scroller.goTo(brakepoints[index + 1][0] + featureItemHeight / 2)
+  } else if (
+    scrollDirection === ScrollDirections.DOWN &&
+    index === array.length - 1 &&
+    brakepoints[index][0] + featureItemHeight / 2 + 50 < scrollY
+  ) {
+    scroller.goToElement('#integrations')
   }
   if (
     scrollDirection === ScrollDirections.UP &&
     index > 0 &&
-    item.getBoundingClientRect().y > 100 &&
-    array[index - 1].getBoundingClientRect().y < 0
+    brakepoints[index][1] - featureItemHeight / 2 - 50 > scrollY &&
+    brakepoints[index][0] < scrollY
   ) {
-    scroller.goTo(scrollY + array[index - 1].getBoundingClientRect().y)
+    scroller.goTo(brakepoints[index - 1][0] + featureItemHeight / 2)
+  } else if (scrollDirection === ScrollDirections.UP && index === 0 && brakepoints[index][0] + featureItemHeight / 2 - 50 < scrollY) {
+    scroller.goToElement('#reliable')
+  }
+}
+
+function checkScrollPosition() {
+  if (scrollDirection === ScrollDirections.DOWN && scrollY > features.offsetTop && scrollY < features.offsetTop + 50) {
+    scroller.goTo(brakepoints[0][0] + featureItemHeight / 2)
+  } else if (
+    scrollDirection === ScrollDirections.UP &&
+    scrollY < features.offsetTop + features.clientHeight &&
+    scrollY > features.offsetTop + features.clientHeight - 50
+  ) {
+    scroller.goTo(brakepoints[brakepoints.length - 1][0] + featureItemHeight / 2)
   }
 }
 
