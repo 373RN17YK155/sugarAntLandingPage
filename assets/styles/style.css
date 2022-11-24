@@ -368,13 +368,13 @@ header.header .header__nav .header__nav-menu ul li a {
 
 .features {
   position: relative;
-  padding-block: 120px;
+  padding-block: clamp(60px, 10vw, 120px);
 }
 
 .features .container {
   display: flex;
   flex-direction: column;
-  gap: 120px;
+  gap: clamp(60px, 10vw, 120px);
 }
 
 .features .feature__items-wrapper {
@@ -385,7 +385,7 @@ header.header .header__nav .header__nav-menu ul li a {
 
 .features .feature__item {
   display: flex;
-  gap: 120px;
+  gap: clamp(60px, 10vw, 120px);
   align-items: center;
   will-change: opacity;
   scroll-snap-align: start;
@@ -398,7 +398,7 @@ header.header .header__nav .header__nav-menu ul li a {
 .features .feature__item .feature-item__img-wrapper {
   position: relative;
   flex: 1 0 50%;
-  padding-bottom: 45%;
+  padding-bottom: 55%;
   transform-style: preserve-3d;
   perspective: 100px;
 }
@@ -406,6 +406,7 @@ header.header .header__nav .header__nav-menu ul li a {
 .features .feature__item .feature-item__img-wrapper img {
   position: absolute;
   will-change: transform;
+  width: clamp(320px, 50vw, 634px);
 }
 
 .features .feature__item .feature-item__content {

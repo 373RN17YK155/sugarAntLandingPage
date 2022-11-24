@@ -34,9 +34,8 @@ class Scroller {
     this.target = y
     this.distance = y - this.start
     this.step = this.distance / timeSec / 60
-    // console.log(this)
-    this.move()
     this.isBusy = true
+    this.move()
   }
 
   move() {
@@ -61,7 +60,8 @@ class Scroller {
 //project variables
 
 let currentScroll = 0
-let scrollDirection = 0
+let scrollDirection = ScrollDirections.DOWN
+let scrollOffset = 100
 const brakepoints = []
 const scroller = new Scroller()
 
@@ -87,11 +87,13 @@ closeMenuButton.addEventListener('click', toggleOverflowMenuVisible)
 
 collapsePanelList.forEach(toggleCollaps)
 
-document.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', addScrollingHanderForLinks))
+document.querySelectorAll('[href^="#"]').forEach((a) => a.addEventListener('click', handleScrollToAnchor))
 
 document.addEventListener('scroll', scrollTrigger)
 
 document.addEventListener('scroll', traceDirection(), false)
+
+overlayMenu.querySelectorAll('[href^="#"]').forEach((a) => a.addEventListener('click', handleScrollToAnchorAndToggleOvrelayMenu))
 
 // calculated values
 
@@ -120,7 +122,7 @@ function fillBrakepoints() {
   document.querySelectorAll('.feature-item__img-wrapper').forEach((_, index) => {
     brakepoints.push([
       features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3),
-      features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3) + featureItemHeight
+      features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3) + featureItemHeight * 3
     ])
   })
   console.log(brakepoints)
@@ -138,7 +140,7 @@ function setParalax() {
     const offsetY = Math.max(Math.min((animEnd - window.scrollY) / (animEnd - animStart), 1), -1)
 
     Array.from(item.children).forEach((img) => {
-      img.style.transform = `translate3d(0, ${offsetY * (window.innerHeight * 0.8)}px, ${img.dataset.zIndex * 100}px) scale(${
+      img.style.transform = `translate3d(-50%, ${offsetY * (window.innerHeight * 0.8)}px, ${img.dataset.zIndex * 100}px) scale(${
         -img.dataset.zIndex + 0.5
       })`
     })
@@ -166,9 +168,12 @@ function setTransform() {
 }
 
 function setTransformForFeatureItem(item, index, array) {
-  if (window.scrollY > brakepoints[index][0] && window.scrollY < brakepoints[index][1] && index < array.length) {
+  if (scrollY > brakepoints[index][0] && scrollY < brakepoints[index][1] - featureItemHeight && index < array.length) {
     item.style.position = 'sticky'
     item.style.top = featuresPaddingBlock + featuresHeaderHeight + 'px'
+  } else if (scrollY > brakepoints[index][1] - featureItemHeight && scrollY < brakepoints[index][1]) {
+    const top = +item.style.top.replace('px', '')
+    item.style.top = top - 50 + 'px'
   } else if (index !== array.length - 1) {
     item.style.position = 'static'
     item.style.top = 'unset'
@@ -181,45 +186,47 @@ function setTransformForFeatureItem(item, index, array) {
 function scrollTrigger() {
   setTransform()
   setParalax()
-  checkScrollPosition()
+  if (!scroller.isBusy) {
+    checkScrollPosition()
+  }
+}
+
+function calcAnimationMidPosition([animStart, animEnd]) {
+  return (animStart + animEnd) / 2
 }
 
 function checkItemPosition(item, index, array) {
-  if (
-    scrollDirection === ScrollDirections.DOWN &&
-    index < array.length - 1 &&
-    brakepoints[index][0] + featureItemHeight / 2 + 50 < scrollY &&
-    brakepoints[index][1] > scrollY
-  ) {
-    scroller.goTo(brakepoints[index + 1][0] + featureItemHeight / 2)
-  } else if (
-    scrollDirection === ScrollDirections.DOWN &&
-    index === array.length - 1 &&
-    brakepoints[index][0] + featureItemHeight / 2 + 50 < scrollY
-  ) {
-    scroller.goToElement('#integrations')
-  }
-  if (
-    scrollDirection === ScrollDirections.UP &&
-    index > 0 &&
-    brakepoints[index][1] - featureItemHeight / 2 - 50 > scrollY &&
-    brakepoints[index][0] < scrollY
-  ) {
-    scroller.goTo(brakepoints[index - 1][0] + featureItemHeight / 2)
-  } else if (scrollDirection === ScrollDirections.UP && index === 0 && brakepoints[index][0] + featureItemHeight / 2 - 50 < scrollY) {
-    scroller.goToElement('#reliable')
+  if (scrollDirection === ScrollDirections.DOWN) {
+    if (
+      index < array.length - 1 &&
+      calcAnimationMidPosition(brakepoints[index]) + scrollOffset < scrollY &&
+      brakepoints[index][1] > scrollY
+    ) {
+      scroller.goTo(calcAnimationMidPosition(brakepoints[index + 1]), 2)
+    }
+    if (calcAnimationMidPosition(brakepoints[array.length - 1]) + scrollOffset < scrollY && brakepoints[index][1] > scrollY) {
+      scroller.goToElement('#integrations')
+    }
+  } else if (scrollDirection === ScrollDirections.UP) {
+    if (index > 0 && calcAnimationMidPosition(brakepoints[index]) - scrollOffset > scrollY && brakepoints[index][0] < scrollY) {
+      scroller.goTo(calcAnimationMidPosition(brakepoints[index - 1]), 2)
+    }
+    if (calcAnimationMidPosition(brakepoints[0]) - scrollOffset > scrollY) {
+      scroller.goToElement('#reliable')
+    }
   }
 }
 
 function checkScrollPosition() {
-  if (scrollDirection === ScrollDirections.DOWN && scrollY > features.offsetTop && scrollY < features.offsetTop + 50) {
-    scroller.goTo(brakepoints[0][0] + featureItemHeight / 2)
-  } else if (
+  if (scrollDirection === ScrollDirections.DOWN && scrollY > features.offsetTop && scrollY < features.offsetTop + scrollOffset) {
+    scroller.goTo(calcAnimationMidPosition(brakepoints[0]))
+  }
+  if (
     scrollDirection === ScrollDirections.UP &&
     scrollY < features.offsetTop + features.clientHeight &&
-    scrollY > features.offsetTop + features.clientHeight - 50
+    scrollY > features.offsetTop + features.clientHeight - scrollOffset
   ) {
-    scroller.goTo(brakepoints[brakepoints.length - 1][0] + featureItemHeight / 2)
+    scroller.goTo(calcAnimationMidPosition(brakepoints[3]))
   }
 }
 
@@ -228,9 +235,15 @@ function toggleOverflowMenuVisible() {
   main.classList.toggle('main__overlay')
 }
 
-function addScrollingHanderForLinks(event) {
+function handleScrollToAnchor(event) {
   event.preventDefault()
-  scroller.goToElement(event.target.getAttribute('href'))
+  scroller.goToElement(this.getAttribute('href'))
+}
+
+function handleScrollToAnchorAndToggleOvrelayMenu(event) {
+  event.preventDefault()
+  scroller.goToElement(this.getAttribute('href'))
+  toggleOverflowMenuVisible()
 }
 
 // run code
