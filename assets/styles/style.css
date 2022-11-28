@@ -101,21 +101,6 @@ input:focus {
   transition: var(--base-transition);
 }
 
-.main::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: calc(100vw / 2);
-  max-width: 1440px;
-  margin: 0 auto;
-  background-color: var(--yellow);
-  z-index: -1;
-  border-bottom-left-radius: calc(100vw / 2);
-  border-bottom-right-radius: calc(100vw / 2);
-}
-
 .main__overlay::after {
   content: '';
   position: absolute;
@@ -233,6 +218,75 @@ header.header .header__nav .header__nav-menu ul li a {
 
 .hero {
   padding-bottom: 400px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(100vw / 2);
+  max-width: 1440px;
+  margin: 0 auto;
+  background-color: var(--yellow);
+  z-index: -1;
+  border-bottom-left-radius: calc(100vw / 2);
+  border-bottom-right-radius: calc(100vw / 2);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinReverce {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+.animate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(100vw / 2);
+  max-width: 1440px;
+  margin: 0 auto;
+  transform-origin: center top;
+
+  animation: 20s linear infinite normal spin;
+
+  z-index: -1;
+}
+
+.animate-img {
+  position: absolute;
+  inset: 0 auto auto 0;
+  animation: 20s linear infinite normal spinReverce;
+}
+
+.animate-img:nth-child(1) {
+  inset: 90% auto auto 60%;
+}
+
+.animate-img:nth-child(2) {
+  inset: 70% auto auto 10%;
+}
+
+.animate-img:nth-child(3) {
+  inset: 70% auto auto 50%;
+}
+
+.animate-img:nth-child(4) {
+  inset: 40% auto auto 80%;
 }
 
 .hero .container {
