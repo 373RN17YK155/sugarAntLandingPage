@@ -125,7 +125,6 @@ function fillBrakepoints() {
       features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3) + featureItemHeight * 3
     ])
   })
-  console.log(brakepoints)
 }
 
 function setInitialStylesForFeatureItemsWrapper() {
@@ -250,3 +249,26 @@ function handleScrollToAnchorAndToggleOvrelayMenu(event) {
 
 fillBrakepoints()
 setInitialStylesForFeatureItemsWrapper()
+
+var duration = -1
+
+function getOffset(t) {
+  var offset = { x: 0, y: 0 }
+  offset.x = t > 1 ? t - 2 : t
+  offset.y = (offset.x * offset.x * -1) / 2
+  return offset
+}
+
+const heroAnimationBlock = document.getElementById('heroAnimation')
+Array.from(heroAnimationBlock.children).forEach((img) => {
+  img.style.left = heroAnimationBlock.clientWidth / 2 - img.clientWidth / 2 + 'px'
+  img.style.top = heroAnimationBlock.clientHeight / 2 - img.clientHeight / 2 + 'px'
+})
+
+setInterval(() => {
+  duration = duration >= 1 ? -1 : duration + 0.003
+  Array.from(heroAnimationBlock.children).forEach((img) => {
+    var cords = getOffset(duration + +img.dataset.offset)
+    img.style.transform = `translate(${heroAnimationBlock.clientWidth * cords.x}px, ${heroAnimationBlock.clientHeight * cords.y}px)`
+  })
+}, 16)
