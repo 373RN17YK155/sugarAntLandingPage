@@ -263,7 +263,6 @@ header::before {
   transform-origin: center center;
   animation: 20s linear infinite normal spin;
   z-index: -1;
-  overflow: hidden;
 }
 
 .animate-img {

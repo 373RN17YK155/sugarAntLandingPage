@@ -255,7 +255,7 @@ var duration = -1
 function getOffset(t) {
   var offset = { x: 0, y: 0 }
   offset.x = t > 1 ? t - 2 : t
-  offset.y = (offset.x * offset.x * -1) / 2
+  offset.y = offset.x * offset.x * -1
   return offset
 }
 
