@@ -122,7 +122,7 @@ function fillBrakepoints() {
   document.querySelectorAll('.feature-item__img-wrapper').forEach((_, index) => {
     brakepoints.push([
       features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3),
-      features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3) + featureItemHeight * 4
+      features.offsetTop + featuresHeaderHeight + index * (featureItemHeight * 3) + featureItemHeight * 3 + featureItemHeight / 2
     ])
   })
 }
@@ -182,13 +182,12 @@ function setTransformForFeatureItem(item, index, array) {
   }
 }
 
-function scrollTrigger() {
-  setTransform()
-  setParalax()
-  if (!scroller.isBusy) {
-    checkScrollPosition()
-  }
+const getPos = (t) => ({
+  x: t > 0 && t < 1 ? (1 - Math.cos(t * Math.PI)) / 2 : t,
+  y: t > 0 && t < 1 ? Math.sin(t * Math.PI) : t <= 0 ? t : 1 - t
+})
 
+function setAnimationForHero() {
   const t = (scrollY / window.innerHeight) * 1.4 - 0.8
 
   const hero = document.getElementById('heroAnimation')
@@ -196,6 +195,15 @@ function scrollTrigger() {
     const pos = getPos(t + +img.dataset.offset)
     img.style.transform = `translate(calc(${pos.x * hero.clientWidth}px - 50%), calc(${pos.y * hero.clientHeight}px - 50%))`
   })
+}
+
+function scrollTrigger() {
+  setTransform()
+  setParalax()
+  setAnimationForHero()
+  if (!scroller.isBusy) {
+    checkScrollPosition()
+  }
 }
 
 function calcAnimationMidPosition([animStart, animEnd]) {
@@ -257,41 +265,4 @@ function handleScrollToAnchorAndToggleOvrelayMenu(event) {
 
 fillBrakepoints()
 setInitialStylesForFeatureItemsWrapper()
-
-// var duration = -1
-
-// function getOffset(t) {
-//   var offset = { x: 0, y: 0 }
-//   offset.x = t > 1 ? t - 2 : t
-//   offset.y = offset.x * offset.x * -1
-//   return offset
-// }
-
-// const heroAnimationBlock = document.getElementById('heroAnimation')
-// Array.from(heroAnimationBlock.children).forEach((img) => {
-//   img.style.left = heroAnimationBlock.clientWidth / 2 - img.clientWidth / 2 + 'px'
-//   img.style.top = heroAnimationBlock.clientHeight / 2 - img.clientHeight / 2 + 'px'
-// })
-
-// setInterval(() => {
-//   duration = duration >= 1 ? -1 : duration + 0.003
-//   Array.from(heroAnimationBlock.children).forEach((img) => {
-//     var cords = getOffset(duration + +img.dataset.offset)
-//     img.style.transform = `translate(${heroAnimationBlock.clientWidth * cords.x}px, ${heroAnimationBlock.clientHeight * cords.y}px)`
-//   })
-// }, 16)
-
-/**
- * @t -- time parameter [0, 1]
- * @return {x, y} object where x and y are  [0, 1]
- * y(0) = 0
- * y(1) = 0
- * y(0.5) = 1
- *
- * x(0) = -1
- * x(1) = 1
- */
-const getPos = (t) => ({
-  x: t > 0 && t < 1 ? (1 - Math.cos(t * Math.PI)) / 2 : t,
-  y: t > 0 && t < 1 ? Math.sin(t * Math.PI) : t <= 0 ? t : 1 - t
-})
+setAnimationForHero()
