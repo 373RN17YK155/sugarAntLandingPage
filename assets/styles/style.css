@@ -257,7 +257,7 @@ header::before {
 .animate {
   position: absolute;
   inset: auto 0 0 0;
-  height: clamp(256px, 50vh, 512px);
+  aspect-ratio: 2;
   max-width: 1440px;
   margin: 0 auto;
   transform-origin: center center;
