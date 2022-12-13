@@ -240,19 +240,13 @@ header::before {
 }
 
 .hero {
-  position: relative;
+  /* position: relative; */
   padding-bottom: clamp(256px, 50vh, 512px);
 }
 
 .animate {
   position: absolute;
-  inset: auto 0 100px 0;
-  aspect-ratio: 2;
-  max-width: 1440px;
-  margin: 0 auto;
-  transform-origin: center center;
-  animation: 20s linear infinite normal spin;
-  z-index: -1;
+  inset: 0;
 }
 
 .animate-img {

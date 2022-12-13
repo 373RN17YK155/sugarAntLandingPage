@@ -145,9 +145,6 @@ function setParalax() {
     })
 
     if (offsetY > -1 && offsetY < 1) {
-      // if (!scroller.isBusy) {
-      //   checkItemPosition(item, index, array)
-      // }
       setTransformForFeatureItem(item.parentElement, index, array)
     }
   })
@@ -182,67 +179,42 @@ function setTransformForFeatureItem(item, index, array) {
   }
 }
 
-const getPos = (t) => ({
+const getPos_old = (t) => ({
   x: t > 0 && t < 1 ? (1 - Math.cos(t * Math.PI)) / 2 : t,
   y: t > 0 && t < 1 ? Math.sin(t * Math.PI) : t <= 0 ? t : 1 - t
 })
 
-function setAnimationForHero() {
-  const t = (scrollY / window.innerHeight) * 1.4 - 0.8
+const getPos = (t) => ({
+  x: Math.sin(t * Math.PI - Math.PI / 2) / 2 + 0.5,
+  y: Math.sin(t * Math.PI)
+})
 
-  const hero = document.getElementById('heroAnimation')
-  Array.from(hero.children).forEach((img) => {
-    const pos = getPos(t + +img.dataset.offset)
-    img.style.transform = `translate(calc(${pos.x * hero.clientWidth}px - 50%), calc(${pos.y * hero.clientHeight}px - 50%))`
+let renderOffsetTopPercent = 0,
+  offsetTopPercent = 0
+
+const hero = document.getElementById('heroAnimation')
+const images = Array.from(hero.children).map((i) => ({
+  offset: +i.dataset.offset,
+  element: i
+}))
+
+function setAnimationForHero() {
+  renderOffsetTopPercent = renderOffsetTopPercent * 0.9 + offsetTopPercent * 0.1
+  images.forEach((img) => {
+    const { x, y } = getPos(renderOffsetTopPercent + img.offset)
+    img.element.style.transform = `translate(calc(${x * hero.clientWidth}px - 50%), calc(${y * hero.clientHeight}px - 50%))`
   })
+  requestAnimationFrame(setAnimationForHero)
 }
 
 function scrollTrigger() {
   setTransform()
   setParalax()
-  setAnimationForHero()
-  if (!scroller.isBusy) {
-    checkScrollPosition()
-  }
+  offsetTopPercent = (scrollY / window.innerHeight) * 1.4 - 0.8
 }
 
 function calcAnimationMidPosition([animStart, animEnd]) {
   return (animStart + animEnd) / 2
-}
-
-function checkItemPosition(item, index, array) {
-  if (scrollDirection === ScrollDirections.DOWN) {
-    if (
-      index < array.length - 1 &&
-      calcAnimationMidPosition(brakepoints[index]) + scrollOffset < scrollY &&
-      brakepoints[index][1] > scrollY
-    ) {
-      scroller.goTo(calcAnimationMidPosition(brakepoints[index + 1]), 2)
-    }
-    if (calcAnimationMidPosition(brakepoints[array.length - 1]) + scrollOffset < scrollY && brakepoints[index][1] > scrollY) {
-      scroller.goToElement('#integrations')
-    }
-  } else if (scrollDirection === ScrollDirections.UP) {
-    if (index > 0 && calcAnimationMidPosition(brakepoints[index]) - scrollOffset > scrollY && brakepoints[index][0] < scrollY) {
-      scroller.goTo(calcAnimationMidPosition(brakepoints[index - 1]), 2)
-    }
-    if (calcAnimationMidPosition(brakepoints[0]) - scrollOffset > scrollY) {
-      scroller.goToElement('#reliable')
-    }
-  }
-}
-
-function checkScrollPosition() {
-  if (scrollDirection === ScrollDirections.DOWN && scrollY > features.offsetTop && scrollY < features.offsetTop + scrollOffset) {
-    scroller.goTo(calcAnimationMidPosition(brakepoints[0]))
-  }
-  if (
-    scrollDirection === ScrollDirections.UP &&
-    scrollY < features.offsetTop + features.clientHeight &&
-    scrollY > features.offsetTop + features.clientHeight - scrollOffset
-  ) {
-    scroller.goTo(calcAnimationMidPosition(brakepoints[3]))
-  }
 }
 
 function toggleOverflowMenuVisible() {
@@ -266,3 +238,68 @@ function handleScrollToAnchorAndToggleOvrelayMenu(event) {
 fillBrakepoints()
 setInitialStylesForFeatureItemsWrapper()
 setAnimationForHero()
+
+// canvas animation
+
+const cnv = document.getElementById('heroAnimation')
+const ctx = cnv.getContext('2d')
+
+const heroImages = [
+  './assets/images/hero/card.svg',
+  './assets/images/hero/map.svg',
+  './assets/images/hero/notification.svg',
+  './assets/images/hero/pain-chart.svg'
+]
+
+function getImgElements() {
+  heroImages.map((image, index) => ({}))
+}
+
+const imagesForAnim = [{ url: '', height: 350 }]
+
+async function loadImages(urls) {
+  return await Promise.all(urls.map((u) => loadImage(u)))
+}
+
+function loadImage(url) {
+  return new Promise((resolve) => {
+    const img = document.createElement('img')
+    img.onload = () => {
+      resolve(img)
+    }
+    img.src = url
+  })
+}
+
+function draw() {
+  ctx.clearRect(0, 0, cnv.width, cnv.height)
+  heroImages.forEach((url, index) => {
+    const img = document.createElement('img')
+    img.src = url
+    const { x, y } = getPos(renderOffsetTopPercent + index * 0.2)
+    ctx.drawImage(
+      img,
+      x * cnv.width - img.naturalWidth / 2,
+      y * cnv.height - img.naturalHeight,
+      img.naturalWidth * ratio,
+      img.naturalHeight * ratio
+    )
+    // ctx.drawImage(img, x * ctx.width, y * ctx.height)
+  })
+  requestAnimationFrame(draw)
+}
+
+let ratio = window.devicePixelRatio || 1
+
+function resizeCanvas() {
+  ratio = window.devicePixelRatio || 1
+  const h = window.innerHeight
+  const w = window.innerWidth
+  cnv.height = h * ratio
+  cnv.width = w * ratio
+  cnv.style.cssText = `width:${w}px;height:${h}px`
+}
+
+resizeCanvas()
+
+loadImages(heroImages).then(draw)
