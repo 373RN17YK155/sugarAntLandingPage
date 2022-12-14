@@ -186,7 +186,7 @@ const getPos_old = (t) => ({
 
 const getPos = (t) => ({
   x: Math.sin(t * Math.PI - Math.PI / 2) / 2 + 0.5,
-  y: Math.sin(t * Math.PI)
+  y: Math.sin(t * Math.PI) / 1.1
 })
 
 let renderOffsetTopPercent = 0,
@@ -237,7 +237,7 @@ function handleScrollToAnchorAndToggleOvrelayMenu(event) {
 
 fillBrakepoints()
 setInitialStylesForFeatureItemsWrapper()
-setAnimationForHero()
+// setAnimationForHero()
 
 // canvas animation
 
@@ -246,14 +246,18 @@ const ctx = cnv.getContext('2d')
 
 const heroImages = [
   './assets/images/hero/card.svg',
+  './assets/images/hero/cube.svg',
+  './assets/images/hero/map.svg',
+  './assets/images/hero/square.png',
+  './assets/images/hero/notification.svg',
+  './assets/images/hero/pain-chart.svg',
+  './assets/images/hero/card.svg',
+  './assets/images/hero/square.png',
   './assets/images/hero/map.svg',
   './assets/images/hero/notification.svg',
+  './assets/images/hero/cube.svg',
   './assets/images/hero/pain-chart.svg'
 ]
-
-function getImgElements() {
-  heroImages.map((image, index) => ({}))
-}
 
 const imagesForAnim = [{ url: '', height: 350 }]
 
@@ -273,10 +277,11 @@ function loadImage(url) {
 
 function draw() {
   ctx.clearRect(0, 0, cnv.width, cnv.height)
+  renderOffsetTopPercent = renderOffsetTopPercent * 0.9 + offsetTopPercent * 0.1
   heroImages.forEach((url, index) => {
     const img = document.createElement('img')
     img.src = url
-    const { x, y } = getPos(renderOffsetTopPercent + index * 0.2)
+    const { x, y } = getPos(renderOffsetTopPercent + index * 0.23)
     ctx.drawImage(
       img,
       x * cnv.width - img.naturalWidth / 2,
