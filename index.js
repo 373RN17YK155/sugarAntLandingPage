@@ -179,18 +179,13 @@ function setTransformForFeatureItem(item, index, array) {
   }
 }
 
-const getPos_old = (t) => ({
-  x: t > 0 && t < 1 ? (1 - Math.cos(t * Math.PI)) / 2 : t,
-  y: t > 0 && t < 1 ? Math.sin(t * Math.PI) : t <= 0 ? t : 1 - t
-})
+// const getPos_old = (t) => ({
+//   x: t > 0 && t < 1 ? (1 - Math.cos(t * Math.PI)) / 2 : t,
+//   y: t > 0 && t < 1 ? Math.sin(t * Math.PI) : t <= 0 ? t : 1 - t
+// })
 
-const getPos = (t) => ({
-  x: Math.sin(t * Math.PI - Math.PI / 2) / 2 + 0.5,
-  y: Math.sin(t * Math.PI) / 1.1
-})
-
-let renderOffsetTopPercent = 0,
-  offsetTopPercent = 0
+let renderOffsetTopPercent = -1,
+  offsetTopPercent = -1
 
 const hero = document.getElementById('heroAnimation')
 const images = Array.from(hero.children).map((i) => ({
@@ -210,7 +205,10 @@ function setAnimationForHero() {
 function scrollTrigger() {
   setTransform()
   setParalax()
-  offsetTopPercent = (scrollY / window.innerHeight) * 1.4 - 0.8
+  const currentOffser = (scrollY / window.innerHeight) * 0.8 - 0.1
+  if (currentOffser > 0) {
+    offsetTopPercent = Math.max(currentOffser, 0)
+  }
 }
 
 function calcAnimationMidPosition([animStart, animEnd]) {
@@ -237,74 +235,3 @@ function handleScrollToAnchorAndToggleOvrelayMenu(event) {
 
 fillBrakepoints()
 setInitialStylesForFeatureItemsWrapper()
-// setAnimationForHero()
-
-// canvas animation
-
-const cnv = document.getElementById('heroAnimation')
-const ctx = cnv.getContext('2d')
-
-const heroImages = [
-  './assets/images/hero/card.svg',
-  './assets/images/hero/cube.svg',
-  './assets/images/hero/map.svg',
-  './assets/images/hero/square.png',
-  './assets/images/hero/notification.svg',
-  './assets/images/hero/pain-chart.svg',
-  './assets/images/hero/card.svg',
-  './assets/images/hero/square.png',
-  './assets/images/hero/map.svg',
-  './assets/images/hero/notification.svg',
-  './assets/images/hero/cube.svg',
-  './assets/images/hero/pain-chart.svg'
-]
-
-const imagesForAnim = [{ url: '', height: 350 }]
-
-async function loadImages(urls) {
-  return await Promise.all(urls.map((u) => loadImage(u)))
-}
-
-function loadImage(url) {
-  return new Promise((resolve) => {
-    const img = document.createElement('img')
-    img.onload = () => {
-      resolve(img)
-    }
-    img.src = url
-  })
-}
-
-function draw() {
-  ctx.clearRect(0, 0, cnv.width, cnv.height)
-  renderOffsetTopPercent = renderOffsetTopPercent * 0.9 + offsetTopPercent * 0.1
-  heroImages.forEach((url, index) => {
-    const img = document.createElement('img')
-    img.src = url
-    const { x, y } = getPos(renderOffsetTopPercent + index * 0.23)
-    ctx.drawImage(
-      img,
-      x * cnv.width - img.naturalWidth / 2,
-      y * cnv.height - img.naturalHeight,
-      img.naturalWidth * ratio,
-      img.naturalHeight * ratio
-    )
-    // ctx.drawImage(img, x * ctx.width, y * ctx.height)
-  })
-  requestAnimationFrame(draw)
-}
-
-let ratio = window.devicePixelRatio || 1
-
-function resizeCanvas() {
-  ratio = window.devicePixelRatio || 1
-  const h = window.innerHeight
-  const w = window.innerWidth
-  cnv.height = h * ratio
-  cnv.width = w * ratio
-  cnv.style.cssText = `width:${w}px;height:${h}px`
-}
-
-resizeCanvas()
-
-loadImages(heroImages).then(draw)

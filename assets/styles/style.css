@@ -78,6 +78,18 @@ h4 {
 }
 
 button {
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  font-weight: var(--font-weight--semi-bold);
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--light-yellow);
+  background-color: var(--blue);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--blue);
   cursor: pointer;
 }
 
@@ -289,23 +301,23 @@ header::before {
 }
 
 .hero .hero__body .body__input {
-  padding: 18px 24px;
+  padding: 1em 1.5em;
   flex: 1 0 60%;
   font-size: clamp(1rem, 0.5rem + 2vw, 1.214rem);
   border-radius: var(--border-radius-sm);
 }
 
 .hero .hero__body .body__button {
-  padding: 18px 26px;
-  flex: 1 0 30%;
+  /* padding: 18px 26px;
+  flex: 1 0 30%; */
   font-weight: var(--font-weight--semi-bold);
   font-size: clamp(1rem, 0.5rem + 2vw, 1.214rem);
-  letter-spacing: 0.03em;
+  /* letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--light-yellow);
   background-color: var(--blue);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--blue);
+  border: 1px solid var(--blue); */
 }
 
 .hero .hero__body .body__label {
@@ -322,6 +334,7 @@ header::before {
 .dignitys .container {
   display: grid;
   gap: 64px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .dignitys .dignity {
@@ -666,21 +679,6 @@ footer.footer .footer__subscribe .subscribe__body {
 footer.footer .footer__subscribe .subscribe__body .body__input {
   padding: 16px 24px;
   border-radius: var(--border-radius-sm);
-}
-
-footer.footer .footer__subscribe .subscribe__body .body__button {
-  padding: 16px;
-  display: flex;
-  justify-content: center;
-  font-weight: var(--font-weight--semi-bold);
-  font-size: 12px;
-  line-height: 15px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--light-yellow);
-  background-color: var(--blue);
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--blue);
 }
 
 .overflow-nav {

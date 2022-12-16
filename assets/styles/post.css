@@ -1,0 +1,58 @@
+.content .container {
+  display: grid;
+  grid-template-areas: 'cat cat cat' 'post post aside';
+  gap: 0 56px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.categoriy-list {
+  grid-area: cat;
+}
+
+.post-content {
+  grid-area: post;
+  display: grid;
+}
+
+.post-list {
+  grid-area: aside;
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.post-cover {
+  position: relative;
+  margin-bottom: 48px;
+  aspect-ratio: 781/535;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.post-cover_info {
+  position: absolute;
+  inset: auto auto 32px 48px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  color: var(--white);
+}
+
+.post-cover_title {
+  flex: 1 1 100%;
+}
+
+.post-cover_title,
+.post-item_post-date,
+.post-item_time-to-read {
+  color: var(--white);
+}
+
+.post-content p {
+  margin-bottom: 16px;
+}
+
+.post-content h3 {
+  margin-block: 24px;
+}
