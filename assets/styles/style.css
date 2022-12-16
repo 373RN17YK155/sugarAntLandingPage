@@ -256,6 +256,11 @@ header::before {
   padding-bottom: clamp(256px, 50vh, 512px);
 }
 
+#heroAnimation {
+  top: 100px;
+  z-index: -1;
+}
+
 .animate {
   position: absolute;
   inset: 0;
