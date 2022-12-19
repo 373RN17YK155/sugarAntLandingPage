@@ -182,7 +182,7 @@ input:focus {
 
 /* styles */
 .sticky {
-  height: 200vh;
+  height: 100vh;
 }
 
 .sticky-wrapper {

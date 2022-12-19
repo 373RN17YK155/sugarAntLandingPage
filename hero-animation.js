@@ -1,134 +1,235 @@
 /** @type {HTMLCanvasElement} */
+
+class ImageFlipper {
+  static coef = 1.3
+  showFirstImage = false
+  invertImage = false
+  onPause = true
+  pause = 23
+  currentPause = 0
+
+  constructor() {
+    this.canvas = document.createElement('canvas')
+    this.ctx = this.canvas.getContext('2d')
+
+    this.baseCanvas = document.createElement('canvas')
+    this.baseCtx = this.baseCanvas.getContext('2d')
+  }
+
+  getBaseImage(img) {
+    const w = (this.baseCanvas.width = img.naturalWidth * ratio * ImageFlipper.coef)
+    const h = (this.baseCanvas.height = img.naturalHeight * ratio * ImageFlipper.coef)
+    this.baseCtx.clearRect(0, 0, w, h)
+    this.baseCtx.drawImage(img, 0, 0, w, h)
+    return this.baseCanvas
+  }
+
+  getFlipImage(img1, img2, flipRadians) {
+    if (this.onPause) {
+      if (flipRadians - this.currentPause > this.pause) {
+        this.currentPause = flipRadians
+        this.onPause = false
+        this.invertImage = !this.invertImage
+      }
+      return this.showFirstImage ? img1 : img2
+    }
+    flipRadians -= this.currentPause
+
+    const sign = Math.sign(Math.cos(flipRadians))
+
+    if (flipRadians >= Math.PI) {
+      this.onPause = true
+    }
+
+    const flipPower = 0.2 * Math.sin(flipRadians) * sign
+    let yScale = Math.abs(Math.cos(flipRadians))
+
+    this.showFirstImage = sign > 0
+    if (this.invertImage) {
+      this.showFirstImage = !this.showFirstImage
+    }
+
+    const img = this.getBaseImage(this.showFirstImage ? img1 : img2)
+
+    const w = img.width
+    const h = img.height
+    const targetWidth = (this.canvas.width = w * (1 + Math.abs(flipPower)))
+    const realHeight = h * yScale
+    const targetHeight = (this.canvas.height = realHeight < 2 ? 2 : realHeight)
+    this.ctx.clearRect(0, 0, targetWidth, targetHeight)
+
+    for (let y = 0; y < targetHeight; y++) {
+      const pY = y / targetHeight
+      const sourceY = pY * h
+      const scaleX = (1 - pY) * (1 + flipPower) + pY * (1 - flipPower)
+      this.ctx.drawImage(img, 0, sourceY, w, 1, (targetWidth - w * scaleX) * 0.5, y, w * scaleX, 1)
+    }
+
+    return this.canvas
+  }
+}
+const imageFlipper = new ImageFlipper()
+
 const cnv = document.getElementById('heroAnimation')
 const ctx = cnv.getContext('2d')
 
-let ratio = window.devicePixelRatio || 1
+let ratio = (window.devicePixelRatio || 1) * 2
 let heroWidth = 1160
 let heroOffset = 0
 const MIN_SCALE = 0.7
 const MAX_SCALE = 1.3
 
 const heroImages = [
-  { offset: -0.1, url: './assets/images/hero/cube.svg', rotation: -5 },
+  {
+    offset: -0.1,
+    url: './assets/images/hero/cube.svg',
+    rotation: -2,
+    transform: {
+      offsetY: () => -60
+    }
+  },
   { offset: 0.1, url: './assets/images/hero/state-map/map.svg' },
   {
     offset: 0.1,
     url: './assets/images/hero/state-map/comment.svg',
-    autoTransform: true,
-    opacity: (t) => linear(1.5, 1.7, 0, 1, t),
-    offsetY: (t) => -100 + linear(1.5, 1.7, 20, 0, t),
-    offsetX: () => -100,
-    scale: (t) => linear(1.5, 1.7, 0.4, 1, t),
+    transform: {
+      opacity: (t) => linear(1.8, 2, 0, 1, t),
+      offsetY: (t) => -100 + linear(1.8, 2, 20, 0, t),
+      offsetX: () => -100,
+      scale: (t) => linear(1.8, 2, 0.4, 1, t)
+    },
     text: [
       {
         color: '#173773',
         fontSize: 10,
         x: 60,
         y: -2,
-        getText: (t) => linear(1.5, 3.9, 48000, 50103, t).toFixed(0)
+        getText: (t) => linear(2.2, 4, 48000, 50103, t).toFixed(0)
       },
       {
         color: '#173773',
         fontSize: 10,
         x: 60,
         y: 10,
-        getText: (t) => linear(1.5, 3.7, 8721, 9889, t).toFixed(0)
+        getText: (t) => linear(2.2, 4.3, 8721, 9889, t).toFixed(0)
       }
     ]
   },
   {
     offset: 0.1,
     url: './assets/images/hero/state-map/us-ut.svg',
-    autoTransform: true,
-    opacity: () => 1,
-    offsetY: () => -30,
-    offsetX: () => -90,
-    scale: (t) => linear(1.5, 1.7, 1, 1.15, t)
+    transform: {
+      offsetY: () => -30,
+      offsetX: () => -90,
+      scale: (t) => linear(1.5, 1.7, 1, 1.15, t)
+    }
   },
   {
     offset: 0.1,
     url: './assets/images/hero/state-map/cursor.svg',
-    autoTransform: true,
-    opacity: () => 1,
-    offsetY: (t) => -30 + linear(1.3, 1.5, 60, 0, t),
-    offsetX: (t) => -90 + linear(1.3, 1.5, -90, 0, t),
-    scale: () => 1
+    transform: {
+      offsetY: (t) => -30 + linear(1.3, 1.5, 60, 0, t),
+      offsetX: (t) => -90 + linear(1.3, 1.5, -90, 0, t)
+    }
   },
   {
     offset: 0.1,
     url: './assets/images/hero/state-map/line-chart.svg',
-    autoTransform: true,
-    opacity: (t) => linear(1.5, 1.7, 0, 1, t),
-    offsetY: () => 70,
-    offsetX: () => 150,
-    scale: () => 1,
+    transform: {
+      opacity: (t) => linear(1.8, 2, 0, 1, t),
+      offsetY: () => 70,
+      offsetX: () => 150
+    },
     text: [
       {
         color: '#3677EF',
         fontSize: 12,
         x: -40,
         y: 40,
-        getText: (t) => linear(1.5, 5, 593, 950, t).toFixed(0)
+        getText: (t) => linear(2, 5, 593, 950, t).toFixed(0)
       },
       {
         color: '#C2D9FE',
         fontSize: 12,
         x: -5,
         y: 40,
-        getText: (t) => linear(1.5, 5, 350, 634, t).toFixed(0)
+        getText: (t) => linear(2, 5, 350, 634, t).toFixed(0)
       },
       {
         color: '#3CA4B0',
         fontSize: 12,
         x: 30,
         y: 40,
-        getText: (t) => linear(1.5, 5, 110, 325, t).toFixed(0)
+        getText: (t) => linear(2, 5, 110, 325, t).toFixed(0)
       }
     ]
   },
   {
     offset: 0.1,
     url: './assets/images/hero/state-map/line-bars.svg',
-    autoTransform: true,
-    opacity: (t) => linear(1.5, 1.7, 0, 1, t),
-    offsetY: () => 58.5,
-    offsetX: () => 148,
-    scaleBottom: (t) => linear(1.6, 4, 0, 1, t),
-    scale: () => 1
+    transform: {
+      opacity: (t) => linear(1.8, 2, 0, 1, t),
+      offsetY: () => 58.5,
+      offsetX: () => 148,
+      scaleBottom: (t) => linear(1.9, 4, 0, 1, t)
+    }
   },
   {
     offset: 0.4,
     url: './assets/images/hero/square.svg',
-    rotation: -5,
-    autoTransform: true,
-    opacity: () => 1,
-    offsetY: () => 20,
-    offsetX: () => -80,
-    scale: () => 1
+    rotation: -1.5,
+    transform: {
+      offsetY: () => 20,
+      offsetX: () => -80
+    }
   },
   {
     offset: 0.4,
-    url: './assets/images/hero/notification.svg',
-    autoTransform: true,
-    opacity: () => 1,
-    offsetY: () => -30,
-    offsetX: () => 0,
-    scale: () => 1
+    url: './assets/images/hero/notification/card.svg'
+  },
+  {
+    offset: 0.4,
+    url: './assets/images/hero/notification/switch-background.svg',
+    transform: {
+      offsetX: () => 50,
+      offsetY: () => -45
+    },
+    draw: {
+      circle: (t) => [24 + 24 * Math.max(Math.min(Math.cos(t) * 1.5, 1), 0), 24, 10, 0, 2 * Math.PI],
+      line: (t) => 0
+    }
   },
   {
     offset: 0.6,
-    url: './assets/images/hero/card.svg',
-    autoTransform: true,
-    opacity: () => 1,
-    offsetY: () => 50,
-    offsetX: () => 0,
-    scale: () => 1
+    url: './assets/images/hero/deal-card/placeholder.svg',
+    transform: {
+      offsetX: () => -10,
+      offsetY: () => 60
+    }
+  },
+  {
+    offset: 0.6,
+    url: './assets/images/hero/deal-card/circle.svg',
+    rotation: 1.3,
+    transform: {
+      offsetX: () => 130,
+      offsetY: () => 10
+    }
+  },
+  {
+    offset: 0.6,
+    flip: 10,
+    url: './assets/images/hero/deal-card/card.svg',
+    url2: './assets/images/hero/deal-card/card-flipped.svg',
+    transform: {
+      offsetY: () => 50
+    }
   },
   { offset: 0.8, url: './assets/images/hero/num-of-deals/card.svg' },
   {
     offset: 0.8,
     url: './assets/images/hero/num-of-deals/doughnut.svg',
-    rotation: 5,
+    rotation: 1,
     text: [
       {
         color: '#525252',
@@ -143,19 +244,29 @@ const heroImages = [
     offset: 0.8,
     url: './assets/images/hero/num-of-deals/legend.svg',
     hasTransform: true,
-    opacity: (t) => Math.max(Math.sin(t * Math.PI), 0),
-    offsetY: (t) => 110 - 10 * Math.sin(t * Math.PI),
-    offsetX: (t) => -20 * Math.sin(t * Math.PI),
-    scale: () => 1
+    transform: {
+      opacity: (t) => Math.max(Math.sin(t * Math.PI), 0),
+      offsetY: (t) => 110 - 10 * Math.sin(t * Math.PI),
+      offsetX: (t) => -20 * Math.sin(t * Math.PI)
+    }
+  },
+  {
+    offset: 0.9,
+    url: './assets/images/hero/square.svg',
+    rotation: -1.5,
+    transform: {
+      offsetY: () => -50
+    }
+  },
+  {
+    offset: 1,
+    url: './assets/images/hero/cube.svg',
+    rotation: -1.2,
+    transform: {
+      offsetY: () => -60
+    }
   }
 ]
-
-// const getPos = (t) => ({
-//   x: Math.sin(t * Math.PI - Math.PI / 2) / 2 + 0.5,
-//   y: Math.sin(t * Math.PI) / 1.1,
-//   y: t > 0 && t < 1 ? Math.sin(t * Math.PI) : t <= 0 ? t : 1 - t
-//   scale: t > 0 && t < 1 ? MIN_SCALE + Math.sin(t * Math.PI) * (MAX_SCALE - MIN_SCALE) : MIN_SCALE
-// })
 
 const getPos = (t) => {
   const tO = scale(t, 1.2)
@@ -175,7 +286,12 @@ const cabs = (t) => (t < 0 ? t : t > 1 ? 1 - t : t)
 const scale = (t, a) => (t - 0.5) * a + 0.5
 
 async function loadImages(heros) {
-  return await Promise.all(heros.map((h) => loadImage(h.url)))
+  return await Promise.all(
+    heros.map(async (h) => {
+      h.img = await loadImage(h.url)
+      if (h.url2) h.img2 = await loadImage(h.url2)
+    })
+  )
 }
 
 function loadImage(url) {
@@ -189,8 +305,8 @@ function loadImage(url) {
 }
 
 function drawImage(img, x, y, scale = 1, rotation = 0, opacity = 1, scaleBottom = 1) {
-  const w = img.naturalWidth * ratio
-  const h = img.naturalHeight * ratio
+  const w = img.naturalWidth * ratio || img.width / ImageFlipper.coef
+  const h = img.naturalHeight * ratio || img.height / ImageFlipper.coef
   ctx.setTransform(scale, 0, 0, scale, x, y)
   ctx.globalAlpha = opacity
   ctx.rotate(rotation)
@@ -221,33 +337,29 @@ function draw() {
     }
   }
   renderOffsetTopPercent = renderOffsetTopPercent * 0.95 + offsetTopPercent * 0.05
-  let coef
-  heroImages.forEach((hero) => {
-    const t = renderOffsetTopPercent + hero.offset
-    hero.pos = getPos(t)
-  })
+  let coef = 0
+  heroImages.forEach((hero) => (hero.pos = getPos(renderOffsetTopPercent + hero.offset)))
   heroImages.sort((h1, h2) => h1.pos.scale - h2.pos.scale)
   heroImages.forEach((hero) => {
     let { x, y, scale, opacity } = hero.pos
     const t = renderOffsetTopPercent + hero.offset
-    // let { x, y, scale, opacity } = getPos(t)
     let offsetX = 0
     let offsetY = 1
     let scaleBottom = 1
     coef = ratio * scale
-    if (hero.hasTransform) {
-      offsetX = hero.offsetX(t) * coef
-      offsetY = hero.offsetY(t) * coef
-      opacity *= hero.opacity(t)
+
+    if (hero.transform) {
+      offsetX = hero.transform.offsetX ? hero.transform.offsetX(hero.hasTransform ? t : timer) * coef : 0
+      offsetY = hero.transform?.offsetY ? hero.transform?.offsetY(hero.hasTransform ? t : timer) * coef : 0
+      scaleBottom = hero.transform?.scaleBottom ? hero.transform?.scaleBottom(timer) : 1
+      opacity *= hero.transform?.opacity ? hero.transform?.opacity(hero.hasTransform ? t : timer) : 1
+      scale *= hero.transform?.scale ? hero.transform?.scale(timer) : 1
     }
-    if (hero.autoTransform) {
-      ;(scaleBottom = hero.scaleBottom ? hero.scaleBottom(timer) : 1), (offsetX = hero.offsetX(timer) * coef)
-      offsetY = hero.offsetY(timer) * coef
-      opacity *= hero.opacity(timer)
-      scale *= hero.scale(timer)
-    }
+
+    const img = hero.flip ? imageFlipper.getFlipImage(hero.img, hero.img2, timer * hero.flip) : hero.img
+
     drawImage(
-      hero.img,
+      img,
       heroOffset + x * heroWidth + offsetX,
       y * cnv.height + offsetY,
       scale,
@@ -255,12 +367,7 @@ function draw() {
       opacity,
       scaleBottom
     )
-    // if (hero.withText) {
-    //   if (hero.displayNumber < hero.maxNumber) {
-    //     hero.displayNumber = hero.displayNumber * 0.99 + hero.maxNumber * 0.01 + 0.1
-    //   }
-    //   drawText(hero.displayNumber.toFixed(0), heroOffset + x * heroWidth, y * cnv.height, 20 * scale * ratio, opacity)
-    // }
+
     if (hero.text?.length)
       hero.text.forEach((textObj) =>
         drawText(
@@ -272,6 +379,26 @@ function draw() {
           textObj.color
         )
       )
+    if (hero.draw) {
+      const drawCoef = Math.min(Math.max(Math.cos(timer) * 5, -1), 1)
+      console.log(timer)
+      if (hero.draw?.line) {
+        ctx.beginPath()
+        ctx.moveTo(heroOffset + x * heroWidth + offsetX - 30, y * cnv.height + offsetY)
+        ctx.lineTo(heroOffset + x * heroWidth + offsetX + 30, y * cnv.height + offsetY)
+        ctx.lineWidth = 12 * coef
+        ctx.strokeStyle = drawCoef > 0 ? '#9CBFFF' : '#D1D1D1'
+        ctx.lineCap = 'round'
+        ctx.stroke()
+      }
+
+      if (hero.draw?.circle) {
+        ctx.beginPath()
+        ctx.arc(heroOffset + x * heroWidth + offsetX + 30 * drawCoef, y * cnv.height + offsetY, 10 * coef, 0, 2 * Math.PI)
+        ctx.fillStyle = drawCoef > 0 ? '#397FFF' : '#999999'
+        ctx.fill()
+      }
+    }
   })
   requestAnimationFrame(draw)
 }
@@ -289,9 +416,4 @@ function resizeCanvas() {
 
 resizeCanvas()
 
-loadImages(heroImages).then((images) => {
-  heroImages.forEach((hero, index) => {
-    hero.img = images[index]
-  })
-  draw()
-})
+loadImages(heroImages).then(draw)
