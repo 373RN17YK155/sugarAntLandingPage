@@ -122,16 +122,16 @@ const heroImages = [
     url: './assets/images/hero/state-map/us-ut.svg',
     transform: {
       offsetY: () => -30,
-      offsetX: () => -90,
-      scale: (t) => linear(2.3, 2.5, 1, 1.15, t)
+      offsetX: () => -89,
+      scale: (t) => linear(2.5, 2.65, 0.81, 1.1, t)
     }
   },
   {
     offset: 0.25,
     url: './assets/images/hero/state-map/cursor.svg',
     transform: {
-      offsetY: (t) => -30 + linear(2, 2.2, 60, 0, t),
-      offsetX: (t) => -90 + linear(2, 2.2, -90, 0, t)
+      offsetY: (t) => -30 + linear(2.1, 2.5, 60, 0, t),
+      offsetX: (t) => -90 + linear(2.1, 2.5, -90, 0, t)
     }
   },
   {
@@ -260,20 +260,20 @@ const heroImages = [
         fontSize: 20,
         x: 0,
         y: 0,
-        getText: (t) => linear(2.3, 7, 3000, 3203, t).toFixed(0)
+        getText: (t) => linear(0.7, 7, 3000, 3203, t).toFixed(0)
       }
     ],
     transform: {
-      opacity: (t) => linear(2.2, 2.3, 0, 1, t)
+      opacity: (t) => linear(0.7, 2, 0, 1, t)
     }
   },
   {
     offset: 0.9,
     url: './assets/images/hero/num-of-deals/legend.svg',
     transform: {
-      opacity: (t) => linear(2, 2.2, 0, 1, t),
+      opacity: (t) => linear(1.6, 2.2, 0, 1, t),
       offsetY: () => 90,
-      offsetX: (t) => linear(2, 2.2, 0, -40, t)
+      offsetX: (t) => linear(1.6, 2.2, 0, -40, t)
     }
   },
   {
