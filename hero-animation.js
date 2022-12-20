@@ -399,13 +399,14 @@ function draw() {
           textObj.color
         )
       )
+
     if (hero.draw) {
       const drawCoef = Math.min(Math.max(Math.cos(timer) * 5, -1), 1)
-      console.log(timer)
       if (hero.draw?.line) {
         ctx.beginPath()
-        ctx.moveTo(heroOffset + x * heroWidth + offsetX - 30, y * cnv.height + offsetY)
-        ctx.lineTo(heroOffset + x * heroWidth + offsetX + 30, y * cnv.height + offsetY)
+        console.log(coef)
+        ctx.moveTo(heroOffset + x * heroWidth + offsetX - 13 * coef, y * cnv.height + offsetY)
+        ctx.lineTo(heroOffset + x * heroWidth + offsetX + 13 * coef, y * cnv.height + offsetY)
         ctx.lineWidth = 12 * coef
         ctx.strokeStyle = drawCoef > 0 ? '#9CBFFF' : '#D1D1D1'
         ctx.lineCap = 'round'
@@ -414,7 +415,7 @@ function draw() {
 
       if (hero.draw?.circle) {
         ctx.beginPath()
-        ctx.arc(heroOffset + x * heroWidth + offsetX + 30 * drawCoef, y * cnv.height + offsetY, 10 * coef, 0, 2 * Math.PI)
+        ctx.arc(heroOffset + x * heroWidth + offsetX + 13 * coef * drawCoef, y * cnv.height + offsetY, 10 * coef, 0, 2 * Math.PI)
         ctx.fillStyle = drawCoef > 0 ? '#397FFF' : '#999999'
         ctx.fill()
       }
