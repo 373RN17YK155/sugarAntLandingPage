@@ -85,18 +85,20 @@ const heroImages = [
     url: './assets/images/hero/cube.svg',
     rotation: -2,
     transform: {
-      offsetY: () => -60
+      offsetY: () => -60,
+      offsetX: () => -60,
+      scale: () => 1.7
     }
   },
-  { offset: 0.1, url: './assets/images/hero/state-map/map.svg' },
+  { offset: 0.25, url: './assets/images/hero/state-map/map.svg' },
   {
-    offset: 0.1,
+    offset: 0.25,
     url: './assets/images/hero/state-map/comment.svg',
     transform: {
-      opacity: (t) => linear(1.8, 2, 0, 1, t),
-      offsetY: (t) => -100 + linear(1.8, 2, 20, 0, t),
+      opacity: (t) => linear(2.6, 2.7, 0, 1, t),
+      offsetY: (t) => -100 + linear(2.6, 2.7, 20, 0, t),
       offsetX: () => -100,
-      scale: (t) => linear(1.8, 2, 0.4, 1, t)
+      scale: (t) => linear(2.6, 2.7, 0.4, 1, t)
     },
     text: [
       {
@@ -104,36 +106,36 @@ const heroImages = [
         fontSize: 10,
         x: 60,
         y: -2,
-        getText: (t) => linear(2.2, 4, 48000, 50103, t).toFixed(0)
+        getText: (t) => linear(2.8, 4.6, 48000, 50103, t).toFixed(0)
       },
       {
         color: '#173773',
         fontSize: 10,
         x: 60,
         y: 10,
-        getText: (t) => linear(2.2, 4.3, 8721, 9889, t).toFixed(0)
+        getText: (t) => linear(2.8, 4.9, 8721, 9889, t).toFixed(0)
       }
     ]
   },
   {
-    offset: 0.1,
+    offset: 0.25,
     url: './assets/images/hero/state-map/us-ut.svg',
     transform: {
       offsetY: () => -30,
       offsetX: () => -90,
-      scale: (t) => linear(1.5, 1.7, 1, 1.15, t)
+      scale: (t) => linear(2.3, 2.5, 1, 1.15, t)
     }
   },
   {
-    offset: 0.1,
+    offset: 0.25,
     url: './assets/images/hero/state-map/cursor.svg',
     transform: {
-      offsetY: (t) => -30 + linear(1.3, 1.5, 60, 0, t),
-      offsetX: (t) => -90 + linear(1.3, 1.5, -90, 0, t)
+      offsetY: (t) => -30 + linear(2, 2.2, 60, 0, t),
+      offsetX: (t) => -90 + linear(2, 2.2, -90, 0, t)
     }
   },
   {
-    offset: 0.1,
+    offset: 0.25,
     url: './assets/images/hero/state-map/line-chart.svg',
     transform: {
       opacity: (t) => linear(1.8, 2, 0, 1, t),
@@ -165,34 +167,46 @@ const heroImages = [
     ]
   },
   {
-    offset: 0.1,
+    offset: 0.25,
     url: './assets/images/hero/state-map/line-bars.svg',
     transform: {
-      opacity: (t) => linear(1.8, 2, 0, 1, t),
+      opacity: (t) => linear(2.6, 2.7, 0, 1, t),
       offsetY: () => 58.5,
       offsetX: () => 148,
-      scaleBottom: (t) => linear(1.9, 4, 0, 1, t)
+      scaleBottom: (t) => linear(2.7, 5, 0, 1, t)
     }
   },
   {
-    offset: 0.4,
+    offset: 0.6,
     url: './assets/images/hero/square.svg',
     rotation: -1.5,
     transform: {
-      offsetY: () => 20,
-      offsetX: () => -80
+      offsetX: () => -200
     }
   },
   {
-    offset: 0.4,
-    url: './assets/images/hero/notification/card.svg'
+    offset: 0.5,
+    url: './assets/images/hero/cube.svg',
+    rotation: -1.2,
+    transform: {
+      offsetY: () => 80,
+      scale: () => 0.7
+    }
   },
   {
-    offset: 0.4,
+    offset: 0.6,
+    url: './assets/images/hero/notification/card.svg',
+    transform: {
+      offsetX: () => -100,
+      offsetY: () => -50
+    }
+  },
+  {
+    offset: 0.6,
     url: './assets/images/hero/notification/switch-background.svg',
     transform: {
-      offsetX: () => 50,
-      offsetY: () => -45
+      offsetX: () => -50,
+      offsetY: () => -95
     },
     draw: {
       circle: (t) => [24 + 24 * Math.max(Math.min(Math.cos(t) * 1.5, 1), 0), 24, 10, 0, 2 * Math.PI],
@@ -200,34 +214,44 @@ const heroImages = [
     }
   },
   {
-    offset: 0.6,
+    offset: 0.7,
     url: './assets/images/hero/deal-card/placeholder.svg',
     transform: {
-      offsetX: () => -10,
-      offsetY: () => 60
+      offsetX: () => -50,
+      offsetY: () => 100
     }
   },
   {
-    offset: 0.6,
+    offset: 0.7,
     url: './assets/images/hero/deal-card/circle.svg',
     rotation: 1.3,
     transform: {
-      offsetX: () => 130,
-      offsetY: () => 10
+      offsetX: () => 90,
+      offsetY: () => 50
     }
   },
   {
-    offset: 0.6,
+    offset: 0.7,
     flip: 10,
     url: './assets/images/hero/deal-card/card.svg',
     url2: './assets/images/hero/deal-card/card-flipped.svg',
     transform: {
-      offsetY: () => 50
+      offsetX: () => -40,
+      offsetY: () => 90
     }
   },
-  { offset: 0.8, url: './assets/images/hero/num-of-deals/card.svg' },
   {
-    offset: 0.8,
+    offset: 0.9,
+    url: './assets/images/hero/square.svg',
+    rotation: -1.5,
+    transform: {
+      offsetY: () => -100,
+      offsetX: () => -60
+    }
+  },
+  { offset: 0.9, url: './assets/images/hero/num-of-deals/card.svg' },
+  {
+    offset: 0.9,
     url: './assets/images/hero/num-of-deals/doughnut.svg',
     rotation: 1,
     text: [
@@ -236,26 +260,20 @@ const heroImages = [
         fontSize: 20,
         x: 0,
         y: 0,
-        getText: (t) => linear(0, 7, 3000, 3203, t).toFixed(0)
+        getText: (t) => linear(2.3, 7, 3000, 3203, t).toFixed(0)
       }
-    ]
-  },
-  {
-    offset: 0.8,
-    url: './assets/images/hero/num-of-deals/legend.svg',
-    hasTransform: true,
+    ],
     transform: {
-      opacity: (t) => Math.max(Math.sin(t * Math.PI), 0),
-      offsetY: (t) => 110 - 10 * Math.sin(t * Math.PI),
-      offsetX: (t) => -20 * Math.sin(t * Math.PI)
+      opacity: (t) => linear(2.2, 2.3, 0, 1, t)
     }
   },
   {
     offset: 0.9,
-    url: './assets/images/hero/square.svg',
-    rotation: -1.5,
+    url: './assets/images/hero/num-of-deals/legend.svg',
     transform: {
-      offsetY: () => -50
+      opacity: (t) => linear(2, 2.2, 0, 1, t),
+      offsetY: () => 90,
+      offsetX: (t) => linear(2, 2.2, 0, -40, t)
     }
   },
   {
@@ -263,7 +281,9 @@ const heroImages = [
     url: './assets/images/hero/cube.svg',
     rotation: -1.2,
     transform: {
-      offsetY: () => -60
+      offsetY: () => -60,
+      offsetX: () => 80,
+      scale: () => 0.6
     }
   }
 ]
