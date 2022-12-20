@@ -138,7 +138,7 @@ const heroImages = [
     offset: 0.25,
     url: './assets/images/hero/state-map/line-chart.svg',
     transform: {
-      opacity: (t) => linear(1.8, 2, 0, 1, t),
+      opacity: (t) => linear(2.6, 2.7, 0, 1, t),
       offsetY: () => 70,
       offsetX: () => 150
     },
