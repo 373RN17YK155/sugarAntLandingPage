@@ -94,14 +94,16 @@ button {
 }
 
 input {
+  padding: 1em 1.5em;
   line-height: 1.25;
   color: var(--dark-gray);
+  font-weight: var(--font-weight-medium);
   background-color: transparent;
-  border: 1.5px solid var(--dark-gray);
+  border: 2px solid var(--blue);
 }
 
 input::placeholder {
-  color: var(--dark-gray);
+  color: var(--blue);
 }
 
 input:focus {
@@ -306,23 +308,14 @@ header::before {
 }
 
 .hero .hero__body .body__input {
-  padding: 1em 1.5em;
   flex: 1 0 60%;
   font-size: clamp(1rem, 0.5rem + 2vw, 1.214rem);
   border-radius: var(--border-radius-sm);
 }
 
 .hero .hero__body .body__button {
-  /* padding: 18px 26px;
-  flex: 1 0 30%; */
   font-weight: var(--font-weight--semi-bold);
   font-size: clamp(1rem, 0.5rem + 2vw, 1.214rem);
-  /* letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--light-yellow);
-  background-color: var(--blue);
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--blue); */
 }
 
 .hero .hero__body .body__label {

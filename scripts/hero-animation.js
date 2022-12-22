@@ -73,6 +73,9 @@ const imageFlipper = new ImageFlipper()
 const cnv = document.getElementById('heroAnimation')
 const ctx = cnv.getContext('2d')
 
+let globalScale = 1
+const maxContainerWidth = 1170
+
 let ratio = (window.devicePixelRatio || 1) * 2
 let heroWidth = 1160
 let heroOffset = 0
@@ -303,7 +306,7 @@ const linear = (startT, endT, minV, maxV, t) => {
 }
 
 const cabs = (t) => (t < 0 ? t : t > 1 ? 1 - t : t)
-const scale = (t, a) => (t - 0.5) * a + 0.5
+const scale = (t, a) => ((t - 0.5) * a + 0.5) * Math.min(window.innerWidth / maxContainerWidth, 1)
 
 async function loadImages(heros) {
   return await Promise.all(
@@ -366,6 +369,7 @@ function draw() {
     let offsetX = 0
     let offsetY = 1
     let scaleBottom = 1
+    scale *= globalScale
     coef = ratio * scale
 
     if (hero.transform) {
@@ -404,7 +408,6 @@ function draw() {
       const drawCoef = Math.min(Math.max(Math.cos(timer) * 5, -1), 1)
       if (hero.draw?.line) {
         ctx.beginPath()
-        console.log(coef)
         ctx.moveTo(heroOffset + x * heroWidth + offsetX - 13 * coef, y * cnv.height + offsetY)
         ctx.lineTo(heroOffset + x * heroWidth + offsetX + 13 * coef, y * cnv.height + offsetY)
         ctx.lineWidth = 12 * coef
@@ -426,15 +429,22 @@ function draw() {
 
 function resizeCanvas() {
   ratio = window.devicePixelRatio || 1
+
   const h = window.innerHeight
   const w = window.innerWidth
   cnv.height = h * ratio
   cnv.width = w * ratio
   cnv.style.cssText = `width:${w}px;height:${h}px`
-  heroWidth = Math.min(innerWidth - 64, 1160) * ratio
+  heroWidth = Math.min(innerWidth - 64, maxContainerWidth) * ratio
   heroOffset = (cnv.width - heroWidth) / 2
+
+  globalScale = Math.min(window.innerWidth / maxContainerWidth, 1)
 }
 
 resizeCanvas()
+
+window.onresize = function () {
+  resizeCanvas()
+}
 
 loadImages(heroImages).then(draw)

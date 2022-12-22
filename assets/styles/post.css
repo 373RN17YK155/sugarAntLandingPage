@@ -1,3 +1,12 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 1.05em;
+}
+
 .content .container {
   display: grid;
   grid-template-areas: 'cat cat cat' 'post post aside';
@@ -11,7 +20,8 @@
 
 .post-content {
   grid-area: post;
-  display: grid;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-list {
@@ -35,7 +45,6 @@
   inset: auto auto 32px 48px;
   display: flex;
   flex-wrap: wrap;
-  gap: 32px;
   color: var(--white);
 }
 
@@ -43,9 +52,9 @@
   flex: 1 1 100%;
 }
 
-.post-cover_title,
-.post-item_post-date,
-.post-item_time-to-read {
+.post-cover .post-cover_title,
+.post-cover .post-item_post-date,
+.post-cover .post-item_time-to-read {
   color: var(--white);
 }
 
