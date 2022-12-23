@@ -68,6 +68,7 @@ class ImageFlipper {
     return this.canvas
   }
 }
+
 const imageFlipper = new ImageFlipper()
 
 const cnv = document.getElementById('heroAnimation')
@@ -86,7 +87,7 @@ const heroImages = [
   {
     offset: -0.1,
     url: './assets/images/hero/cube.svg',
-    rotation: -2,
+    rotation: -1.1,
     transform: {
       offsetY: () => -60,
       offsetX: () => -60,
@@ -98,10 +99,10 @@ const heroImages = [
     offset: 0.25,
     url: './assets/images/hero/state-map/comment.svg',
     transform: {
-      opacity: (t) => linear(2.6, 2.7, 0, 1, t),
-      offsetY: (t) => -100 + linear(2.6, 2.7, 20, 0, t),
+      opacity: (t) => linear(3, 3.2, 0, 1, t),
+      offsetY: (t) => -100 + linear(3, 3.2, 20, 0, t),
       offsetX: () => -100,
-      scale: (t) => linear(2.6, 2.7, 0.4, 1, t)
+      scale: (t) => linear(3, 3.2, 0.4, 1, t)
     },
     text: [
       {
@@ -109,14 +110,14 @@ const heroImages = [
         fontSize: 10,
         x: 60,
         y: -2,
-        getText: (t) => linear(2.8, 4.6, 48000, 50103, t).toFixed(0)
+        getText: (t) => linear(3.2, 5.4, 48000, 50103, t).toFixed(0)
       },
       {
         color: '#173773',
         fontSize: 10,
         x: 60,
         y: 10,
-        getText: (t) => linear(2.8, 4.9, 8721, 9889, t).toFixed(0)
+        getText: (t) => linear(3.2, 5.4, 8721, 9889, t).toFixed(0)
       }
     ]
   },
@@ -126,22 +127,22 @@ const heroImages = [
     transform: {
       offsetY: () => -30,
       offsetX: () => -89,
-      scale: (t) => linear(2.5, 2.65, 0.81, 1.1, t)
+      scale: (t) => linear(2.9, 3, 0.81, 1.1, t)
     }
   },
   {
     offset: 0.25,
     url: './assets/images/hero/state-map/cursor.svg',
     transform: {
-      offsetY: (t) => -30 + linear(2.1, 2.5, 60, 0, t),
-      offsetX: (t) => -90 + linear(2.1, 2.5, -90, 0, t)
+      offsetY: (t) => -30 + linear(2.7, 2.9, 60, 0, t),
+      offsetX: (t) => -90 + linear(2.7, 2.9, -90, 0, t)
     }
   },
   {
     offset: 0.25,
     url: './assets/images/hero/state-map/line-chart.svg',
     transform: {
-      opacity: (t) => linear(2.6, 2.7, 0, 1, t),
+      opacity: (t) => linear(3, 3.2, 0, 1, t),
       offsetY: () => 70,
       offsetX: () => 150
     },
@@ -182,7 +183,7 @@ const heroImages = [
   {
     offset: 0.6,
     url: './assets/images/hero/square.svg',
-    rotation: -1.5,
+    rotation: -0.9,
     transform: {
       offsetX: () => -200
     }
@@ -190,7 +191,7 @@ const heroImages = [
   {
     offset: 0.5,
     url: './assets/images/hero/cube.svg',
-    rotation: -1.2,
+    rotation: 1,
     transform: {
       offsetY: () => 80,
       scale: () => 0.7
@@ -227,7 +228,7 @@ const heroImages = [
   {
     offset: 0.7,
     url: './assets/images/hero/deal-card/circle.svg',
-    rotation: 1.3,
+    rotation: 1,
     transform: {
       offsetX: () => 90,
       offsetY: () => 50
@@ -246,7 +247,7 @@ const heroImages = [
   {
     offset: 0.9,
     url: './assets/images/hero/square.svg',
-    rotation: -1.5,
+    rotation: -1.1,
     transform: {
       offsetY: () => -100,
       offsetX: () => -60
@@ -256,7 +257,7 @@ const heroImages = [
   {
     offset: 0.9,
     url: './assets/images/hero/num-of-deals/doughnut.svg',
-    rotation: 1,
+    rotation: 0.8,
     text: [
       {
         color: '#525252',
@@ -282,7 +283,7 @@ const heroImages = [
   {
     offset: 1,
     url: './assets/images/hero/cube.svg',
-    rotation: -1.2,
+    rotation: -0.8,
     transform: {
       offsetY: () => -60,
       offsetX: () => 80,

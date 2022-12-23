@@ -1,5 +1,7 @@
 import posts from './posts.json' assert { type: 'json' }
 
+import { getPostTemplate } from './blog-module.js'
+
 const postContent = document.getElementById('postContent')
 
 function init() {
@@ -7,6 +9,13 @@ function init() {
     get: (searchParams, prop) => searchParams.get(prop)
   })
   postContent.innerHTML = getPostContent(posts[params.post])
+  drawLastPosts()
+}
+
+function drawLastPosts() {
+  const postList = document.getElementById('postList')
+  const postsForDraw = posts.slice(0, 3)
+  postsForDraw.forEach((item, index) => postList.insertAdjacentHTML('beforeend', getPostTemplate(index, item)))
 }
 
 function getPostContent({ title, photoUrl = '../assets/images/office-woman-hands-on-report.png', createDate, readTime, content }) {
